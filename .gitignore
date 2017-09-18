@@ -1,0 +1,15 @@
+/target/
+.vscode/
+.classpath
+.project
+.settings
+logs/
+*.log
+*.iml
+!.gitkeep
+platforms/
+plugins/
+tmp
+.idea
+.DS_Store
+~*
