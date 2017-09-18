@@ -34,10 +34,14 @@ public class Main {
         //System.out.println("args.len:"+args.length);
         //System.out.println(args);
         String jsonFile=null;
+        String destFile=null;
         if(args.length>0){
             jsonFile=args[0];
         }
-        genXls(jsonFile, "./gen.csv");
+        if(args.length>1){
+            destFile=args[1];
+        }
+        genXls(jsonFile, null==destFile ? "./gen.csv" : destFile);
     }
 
 
