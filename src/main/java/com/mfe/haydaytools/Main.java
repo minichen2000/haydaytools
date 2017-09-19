@@ -51,6 +51,9 @@ public class Main {
         Files.deleteIfExists(dest);
         Files.createFile(dest);
         BufferedWriter writer=Files.newBufferedWriter(dest, Charset.forName("utf-8"), StandardOpenOption.APPEND);
+        //wirte title
+        writer.write("Name,Level,barnCur,barnMax,siloCur,siloMax");
+        writer.newLine();
 
         if(null!=jsonFile){
             ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +85,7 @@ public class Main {
             }
         };
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(Paths.get("."), account_dir_filter)) {
+
             for (Path file : ds) {
                 line=genLine(file);
                 //System.out.println(line);
@@ -105,24 +109,23 @@ public class Main {
         }
         String level=new String(Files.readAllBytes(levelF));
         JsonParser jsonParse = jsonFactory.createParser(sizeF.toFile());
-        String rlt=dir.getFileName()+","+level+",";
+        StringBuilder rlt= new StringBuilder(dir.getFileName() + "," + level + ",");
         while(jsonParse.nextToken() != JsonToken.END_OBJECT){
             String fieldName = jsonParse.getCurrentName();
-            if("barnMax".equals(fieldName)){
+            if("barnCur".equals(fieldName) || "barnMax".equals(fieldName) || "siloCur".equals(fieldName)){
                 jsonParse.nextToken();
                 //System.out.println(jsonParse.getIntValue());
-                rlt+=(""+jsonParse.getIntValue()+",");
+                rlt.append(jsonParse.getIntValue()).append(",");
             }
             if("siloMax".equals(fieldName)){
                 jsonParse.nextToken();
                 //System.out.println(jsonParse.getIntValue());
-                rlt+=(""+jsonParse.getIntValue());
+                rlt.append(jsonParse.getIntValue());
                 jsonParse.close();
-                return rlt;
+                return rlt.toString();
             }
-
         }
         jsonParse.close();
-        return rlt;
+        return rlt.toString();
     }
 }
