@@ -52,7 +52,7 @@ public class Main {
         Files.createFile(dest);
         BufferedWriter writer=Files.newBufferedWriter(dest, Charset.forName("utf-8"), StandardOpenOption.APPEND);
         //wirte title
-        writer.write("Name,Level,barnCur,barnMax,siloCur,siloMax");
+        writer.write("No.,Name,Level,barnCur,barnMax,siloCur,siloMax");
         writer.newLine();
 
         if(null!=jsonFile){
@@ -65,11 +65,13 @@ public class Main {
             //System.out.println("Got " + o);
             //System.out.println("Clients:"+o.get("clients"));
             List<Map<String, Object>> arr=(List<Map<String, Object>>)(o.get("clients"));
+            int i=1;
             for(Map<String, Object> pp : arr){
                 //System.out.println("name:"+pp.get("name"));
                 line=genLine(Paths.get((String)(pp.get("name"))));
                 //System.out.println(line);
                 if(null!=line){
+                    line=""+(i++)+","+line;
                     writer.write(line);
                     writer.newLine();
                 }
@@ -86,10 +88,12 @@ public class Main {
         };
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(Paths.get("."), account_dir_filter)) {
 
+            int i=1;
             for (Path file : ds) {
                 line=genLine(file);
                 //System.out.println(line);
                 if(null!=line){
+                    line=""+(i++)+","+line;
                     writer.write(line);
                     writer.newLine();
                 }
